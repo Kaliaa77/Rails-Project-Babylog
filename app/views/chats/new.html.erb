@@ -1,0 +1,15 @@
+<div class="hero-container text-center position-relative mb-5 rounded-5">
+  <div class="col"><%= image_tag "Logo.png", alt: "logo babylog", class:"avatar" %></div>
+</div>
+<div class="text-center">
+  <h3 class="question-baby mt-3">Pour quel bébé avez vous une question ?</h3>
+
+  <div class="separator mb-3"></div>
+
+<% current_user.user_babies.each do |baby| %>
+  <%= button_to baby.name, chats_path,
+      method: :post,
+      params: { persona: "default", user_baby_id: baby.id },
+      class: "button-of-baby" %>
+  <% end %>
+</div>

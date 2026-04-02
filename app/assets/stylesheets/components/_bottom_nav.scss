@@ -1,0 +1,139 @@
+// ============================================================
+// BabyLog — _bottom_nav.scss (Version Finale Corrigée)
+// ============================================================
+
+$rose:       #C4736A;
+$rose-light: #E8A89F;
+$rose-pale:  #F5EDE8;
+$rose-deep:  #8B5E5A;
+$text-light: #B09090;
+$font-main:  'Nunito', sans-serif;
+
+// ── BARRE PRINCIPALE ──────────────────────────────────────
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+
+  background: #F0E4DE;
+  border-top: 1px solid rgba(196, 115, 106, 0.12);
+  box-shadow: 0 -4px 20px rgba(196, 115, 106, 0.08);
+
+  // Gestion de l'espace pour l'encoche du bas (iPhone)
+  padding: 10px 8px calc(14px + env(safe-area-inset-bottom));
+
+  // --- ADAPTATION MOBILE 390px ---
+  @media screen and (max-width: 400px) {
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 8px;
+  }
+
+  // --- VERSION DESKTOP / LARGE PHONES (> 440px) ---
+  @media (min-width: 440px) {
+    left: 50%;
+    right: auto;
+    width: 440px;
+    transform: translateX(-50%);
+    border-radius: 25px 25px 0 0; // Look flottant sur grand écran
+  }
+}
+
+// ── ITEM (Lien de navigation) ─────────────────────────────
+.bottom-nav__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  flex: 1;
+
+  color: $text-light;
+  text-decoration: none;
+  cursor: pointer;
+  padding: 4px 6px;
+  border-radius: 14px;
+  transition: all 0.2s ease;
+
+  &:hover {
+    color: $rose-light;
+    background: rgba(196, 115, 106, 0.04);
+  }
+
+  // État Actif (Page courante)
+  &--active {
+    color: $rose;
+    position: relative;
+
+    .bottom-nav__icon {
+      stroke: $rose;
+      transform: scale(1.1);
+    }
+
+    .bottom-nav__label {
+      color: $rose;
+      font-weight: 900;
+    }
+
+    // Indicateur (petit point)
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: -6px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: $rose;
+    }
+  }
+
+  &--disabled {
+    opacity: 0.3;
+    pointer-events: none;
+  }
+
+  &:active:not(&--disabled) {
+    transform: scale(0.92); // Feedback tactile
+  }
+}
+
+// ── ICÔNE SVG ─────────────────────────────────────────────
+.bottom-nav__icon {
+  width: 22px;
+  height: 22px;
+  stroke: currentColor;
+  fill: none; // Pour des icônes de type "outline"
+  stroke-width: 2;
+  transition: all 0.2s ease;
+
+  @media screen and (max-width: 390px) {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+// ── LABEL (Texte) ─────────────────────────────────────────
+.bottom-nav__label {
+  font-family: $font-main;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  line-height: 1.2;
+  transition: color 0.2s ease;
+
+  @media screen and (max-width: 390px) {
+    font-size: 8.5px;
+  }
+}
+
+// ── ESPACE RÉSERVÉ (Pour ne pas cacher le contenu) ────────
+.page-content {
+  padding-bottom: calc(90px + env(safe-area-inset-bottom));
+  width: 100vw;
+}

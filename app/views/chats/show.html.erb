@@ -1,0 +1,80 @@
+<%= turbo_stream_from @chat %>
+<%= render "results/title" %>
+
+<div class="chat-page">
+  <div class="chat-wrapper">
+
+    <!-- ===== HEADER CHAT ===== -->
+    <div class="chat-header-card"> <!-- bloc bébé, ajout -->
+
+      <% if current_user.user_babies.any? %>
+        <% baby = @chat.user_baby %>
+        <% age_in_months = ((Date.current.year * 12 + Date.current.month) - (baby.birth_date.year * 12 + baby.birth_date.month)) %>
+
+        <div class="baby-info">
+          <span class="baby-pill">
+            👼 Bébé : <strong><%= baby.name %></strong>
+          </span>
+
+          <span class="baby-pill">
+              🎂 Âge :
+              <%
+                age_in_days = (Date.today - baby.birth_date).to_i
+                age_in_months = (age_in_days / 30.44).floor
+                age_in_years = age_in_months / 12
+                remaining_months = age_in_months % 12
+              %>
+
+              <% if age_in_months < 1 %>
+                <strong><%= age_in_days %> jours</strong>
+
+              <% elsif age_in_months < 24 %>
+                <strong><%= age_in_months %> mois</strong>
+
+              <% else %>
+                <strong>
+                  <%= age_in_years %> ans
+                  <% if remaining_months > 0 %>
+                    <%= remaining_months %> mois
+                  <% end %>
+                </strong>
+              <% end %>
+            </span>
+
+          <span class="baby-pill">
+            ⚖️ Poids : <strong><%= baby.weight %> kg</strong>
+          </span>
+        </div>
+      <% end %>
+    </div>
+
+    <!-- ===== MESSAGES ===== -->
+    <div class="messages-wrapper"> <!-- bloc message, ajout -->
+
+      <div class="messages-container" id="bubble">
+        <%= render "messages/messages", messages: @chat.messages %>
+      </div>
+
+      <!-- ===== FORM MESSAGE ===== -->
+      <div class="chat-input" id="turbo-chat">
+        <%= render "messages/form", chat: @chat, message: Message.new %>
+      </div>
+
+    </div>
+
+    <!-- ===== ACTION RESULT ===== -->
+
+    <div class="chat-actions" id="generate-button">
+      <% if @chat.messages.any? %>
+      <%= render "messages/button", chat: @chat %>
+      <% end %>
+    </div>
+
+
+    <!-- ===== BACK ===== -->
+    <div class="back-home">
+      <%= link_to "Retour à l'accueil", root_path, class: "home-link-btn" %>
+    </div>
+
+  </div>
+</div>
